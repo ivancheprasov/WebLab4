@@ -90,6 +90,7 @@ class WelcomeForm extends React.Component {
                                this.handleLoginChange(event)
                            }}
                            maxLength={40}
+                           id='loginInput'
                            style={this.props.style.loginInput}
                            form="welcomeForm"/>
                     <input className="passwordInput"

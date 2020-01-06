@@ -3,9 +3,8 @@ import {connect} from 'react-redux';
 import {setRInput, setXInput, setYInput, setDots} from '../actions/formActions';
 import $ from 'jquery';
 import axios from 'axios';
-import {port} from "../const/port";
-import {DotArray} from "../classes/DotArray";
-import {Dot} from "../classes/Dot";
+import {port} from '../const/port';
+import {DotArray} from '../classes/DotArray';
 
 class MainForm extends React.Component {
 
@@ -15,7 +14,7 @@ class MainForm extends React.Component {
         let y = $('#yInput').val();
         let r = $('input[name=rInput]:checked').val();
         if (this.validate(x, y, r)) {
-            this.sendDot(x, y, r).then(()=>this.drawDots(r));
+            this.sendDot(x, y, r).then(() => this.drawDots(r));
         }
         return false;
     }
@@ -89,47 +88,60 @@ class MainForm extends React.Component {
             xVal = (-canvas.height / 2 + x) / (0.35 * canvas.height) * R;
             yVal = (canvas.height / 2 - y) / (0.35 * canvas.height) * R;
             this.sendDot(Number(parseFloat(xVal).toPrecision(3)), Number(parseFloat(yVal).toPrecision(3)), R)
-                .then(()=>this.drawDots(R));
+                .then(() => this.drawDots(R));
         }
     }
 
-     async sendDot(x, y, r) {
-         const url = 'http://localhost:' + port + '/dots';
-         await axios.post(url, JSON.stringify({x: x, y: y, r: r}),{
-             headers: { Authorization:'Basic '+btoa(this.props.user.loginInput+':'+this.props.user.passwordInput)}}).then(result => {
-                 if (result.status===200) {
-                     this.updateDots(x,y,r);
-                 } else {
-                     this.clearErrorLog();
-                     this.pushErrorLog('Не удалось добавить точку');
-                 }
-             }
-         );
-        // this.updateDots(x,y,r);
+    async sendDot(x, y, r) {
+        let ok=false;
+        const url = 'http://localhost:' + port + '/dots';
+        await axios.post(url, JSON.stringify({x: x, y: y, r: r}), {
+            headers: {Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput)},
+            'Content-type': 'application/json'
+        }).then(result => {
+                if (result.status === 200) {
+                    ok=true;
+                } else {
+                    this.clearErrorLog();
+                    this.pushErrorLog('Не удалось добавить точку');
+                }
+            }
+        );
+        if(ok)await this.updateDots(x, y, r);
     }
 
     async getDots() {
         const url = 'http://localhost:' + port + '/dots';
-        let dots=new DotArray(this.props.form.dots);
-        await axios.get(url,{
-            headers: { Authorization:'Basic '+btoa(this.props.user.loginInput+':'+this.props.user.passwordInput)}}).then(response => {
-                if (response.status===200) {
-                    let array=response.json();
-                    let dots=new DotArray();
-                    Array.from(array).forEach(dot=>dots.add(new Dot(dot.x,dot.y,dot.r)));
+        let dots = new DotArray(this.props.form.dots);
+        await axios.get(url, {
+            headers: {
+                Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput),
+                'Content-type': 'application/json'
+            }
+        }).then(response => {
+                if (response.status === 200) {
+                    dots = new DotArray();
+                    Array.from(response.data).forEach(dot => {
+                        dots.add(dot.x, dot.y, dot.r);
+                    });
+                    this.props.setDots(dots.getDots());
                 } else {
                     this.clearErrorLog();
                     this.pushErrorLog('Не удалось получить координаты точек');
                 }
             }
         );
-        this.props.setDots(dots.getDots());
         return dots;
     }
-    async updateDots(x,y,r){
+
+    async updateDots(x, y, r) {
         const dots = await this.getDots();
         dots.add(x, y, r);
-        await this.props.setDots(dots.getDots());
+        this.props.setDots(dots.getDots());
+    }
+    async renderDefaultDots(){
+        const dots = await this.getDots();
+        this.props.setDots(dots.getDots());
     }
     pushErrorLog(message) {
         let errorJquery = $('#errorLog');
@@ -151,7 +163,7 @@ class MainForm extends React.Component {
     renderCanvas() {
         let R = $('input[name=rInput]:checked').val();
         this.drawCanvas(R);
-        this.drawDots(R);
+        this.renderDefaultDots().then(()=>this.drawDots(R));
     }
 
     drawCanvas(R) {
@@ -272,12 +284,12 @@ class MainForm extends React.Component {
         this.drawDots(event.target.value);
     }
 
-    async drawDots(R) {
-        if (!(R === "R")) {
+    drawDots(R) {
+        if (!(R === 'R')) {
             let canvas = $('#canvas').get(0);
-            let context = canvas.getContext("2d");
+            let context = canvas.getContext('2d');
             let size = canvas.height;
-            const dots = await this.getDots();
+            const dots = new DotArray(this.props.form.dots);
             dots.getDots().forEach(dot => {
                 if (this.isHit(dot.getX(), dot.getY())) {
                     if (dots.getDots().indexOf(dot) === (dots.getDots().length - 1)) {
@@ -300,8 +312,8 @@ class MainForm extends React.Component {
                 let x = dot.getX();
                 let y = dot.getY();
                 let r = dot.getR();
-                let canvasX = this.calculateCanvasCoordinate(x * 0.35 * size / r + size / 2,r,R,size);
-                let canvasY = this.calculateCanvasCoordinate(size / 2 - y * 0.35 * size / r,r,R,size);
+                let canvasX = this.calculateCanvasCoordinate(x * 0.35 * size / r + size / 2, r, R, size);
+                let canvasY = this.calculateCanvasCoordinate(size / 2 - y * 0.35 * size / r, r, R, size);
                 context.arc(canvasX, canvasY, 3, 0, 2 * Math.PI, true);
                 context.closePath();
                 context.fill();
@@ -313,17 +325,19 @@ class MainForm extends React.Component {
             });
         }
     }
-    calculateCanvasCoordinate(value,r,R,size){
+
+    calculateCanvasCoordinate(value, r, R, size) {
         if (value >= size / 2) {
             return (value - size / 2) * r / R + size / 2;
         } else {
-            return  size / 2 - (size / 2 - value) * r / R;
+            return size / 2 - (size / 2 - value) * r / R;
         }
     }
+
     isHit(x, y) {
         let r = $('input[name=rInput]:checked').val();
         return ((x >= 0 && y >= 0) && (y <= -x + (r / 2))) ||
-            ((x < 0 && y >= 0) && (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r/2, 2))) ||
+            ((x < 0 && y >= 0) && (Math.pow(x, 2) + Math.pow(y, 2) <= Math.pow(r / 2, 2))) ||
             ((x < 0 && y < 0) && (x >= (-r / 2) && y >= -r));
     }
 
