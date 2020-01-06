@@ -1,0 +1,31 @@
+html{
+	height: 95%;
+}
+body{
+	height: 95%;
+	color: white;
+	background-color:#d8ccc0;
+	font-family: "Times New Roman",serif;
+	margin: 2% 5%;
+	position: relative;
+}
+button:focus,input:focus{
+	outline: none;
+}
+button:hover{
+	font-weight:bold;
+}
+a{
+	color:white;
+}
+#gitLink{
+	text-decoration: underline;
+	font-style: italic;
+	cursor: pointer;
+}
+#gitLink:hover{
+	font-weight: bold;
+}
+.pointTable td{
+	width:20%;
+}
