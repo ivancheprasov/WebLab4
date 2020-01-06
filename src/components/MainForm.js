@@ -95,8 +95,9 @@ class MainForm extends React.Component {
 
      async sendDot(x, y, r) {
          const url = 'http://localhost:' + port + '/dots';
-         await axios.post(url, JSON.stringify({x: x, y: y, r: r})).then(result => {
-                 if (result.ok) {
+         await axios.post(url, JSON.stringify({x: x, y: y, r: r}),{
+             headers: { Authorization:'Basic '+btoa(this.props.user.loginInput+':'+this.props.user.passwordInput)}}).then(result => {
+                 if (result.status===200) {
                      this.updateDots(x,y,r);
                  } else {
                      this.clearErrorLog();
@@ -110,8 +111,9 @@ class MainForm extends React.Component {
     async getDots() {
         const url = 'http://localhost:' + port + '/dots';
         let dots=new DotArray(this.props.form.dots);
-        await axios.get(url).then(response => {
-                if (response.ok) {
+        await axios.get(url,{
+            headers: { Authorization:'Basic '+btoa(this.props.user.loginInput+':'+this.props.user.passwordInput)}}).then(response => {
+                if (response.status===200) {
                     let array=response.json();
                     let dots=new DotArray();
                     Array.from(array).forEach(dot=>dots.add(new Dot(dot.x,dot.y,dot.r)));
@@ -566,6 +568,7 @@ class MainForm extends React.Component {
 
 const mapStateToProps = store => {
     return {
+        user: store.user,
         leftTable: store.style.deviceType.leftTable,
         style: store.style.deviceType.mainForm,
         form: store.form,

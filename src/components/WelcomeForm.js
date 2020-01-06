@@ -31,7 +31,7 @@ class WelcomeForm extends React.Component {
             const url='http://localhost:'+port+'/';
             axios.post(url,{data},{
                 headers: { Authorization:'Basic '+btoa(data.login+':'+data.password)}}).then(result=>{
-                if(result.ok){
+                if(result.status===200){
                     this.props.setLogIn(true);
                 }else{
                     this.props.setUserMessage('Не удалось войти в систему. Проверьте логин и пароль');
@@ -47,8 +47,12 @@ class WelcomeForm extends React.Component {
         if (this.checkInput()) {
             const data = this.getData();
             const url='http://localhost:'+port+'/register';
-            axios.post(url,JSON.stringify({username:data.login,password:data.password})).then(result=>{
-                if(result.ok){
+            axios.post(url,JSON.stringify({username:data.login,password:data.password}),{
+                headers:{
+                    'Content-type':'application/json'
+                }
+            }).then(result=>{
+                if(result.status===200){
                     this.props.setUserMessage("Регистрация прошла успешно.");
                 }else{
                     this.props.setUserMessage("Не удалось зарегистрироваться. Возможно, выбранный логин уже занят.");
