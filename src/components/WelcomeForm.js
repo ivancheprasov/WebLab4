@@ -29,7 +29,7 @@ class WelcomeForm extends React.Component {
         if (this.checkInput()) {
             try{
                 const data = this.getData();
-                const url = 'http://localhost:' + port + '/';
+                const url = `http://localhost:${port}/`;
                 axios.post(url, {data}, {
                     headers: {Authorization: 'Basic ' + btoa(data.login + ':' + data.password)}
                 })
@@ -48,7 +48,7 @@ class WelcomeForm extends React.Component {
         this.props.setUserMessage('');
         if (this.checkInput()) {
             const data = this.getData();
-            const url = 'http://localhost:' + port + '/register';
+            const url = `http://localhost:${port}/register`;
             axios.post(url, JSON.stringify(
                 {username: data.login, password: data.password}),
                 {headers: {'Content-type': 'application/json'}})

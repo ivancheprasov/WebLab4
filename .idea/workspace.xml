@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="920b011f-05f5-49a3-b32d-083a542a8902" name="Default Changelist" comment="">
+    <list default="true" id="920b011f-05f5-49a3-b32d-083a542a8902" name="Default Changelist" comment="Added a few backticks, fixed the bug with multiple canvas clicks.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/MainForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MainForm.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/WelcomeForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WelcomeForm.js" afterDir="false" />
@@ -132,7 +132,8 @@
       <workItem from="1578005706383" duration="19697000" />
       <workItem from="1578228351926" duration="45696000" />
       <workItem from="1578342193777" duration="4246000" />
-      <workItem from="1578347141944" duration="8679000" />
+      <workItem from="1578347141944" duration="10297000" />
+      <workItem from="1578413856190" duration="8313000" />
     </task>
     <task id="LOCAL-00001" summary="Canvas, table and other components are working correctly.">
       <created>1578294820258</created>
@@ -155,7 +156,21 @@
       <option name="project" value="LOCAL" />
       <updated>1578350100295</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added btoa exception catcher, fixed the bug with double dot sending">
+      <created>1578366489850</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1578366489850</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added btoa exception catcher, fixed the bug with double dot sending">
+      <created>1578366513813</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1578366513813</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -165,7 +180,9 @@
     <MESSAGE value="Canvas, table and other components are working correctly." />
     <MESSAGE value="Fixed headers in axios" />
     <MESSAGE value="Added async functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added async functions" />
+    <MESSAGE value="Added btoa exception catcher, fixed the bug with double dot sending" />
+    <MESSAGE value="Added a few backticks, fixed the bug with multiple canvas clicks." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a few backticks, fixed the bug with multiple canvas clicks." />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578360063366">
@@ -176,18 +193,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1578272544173" />
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1578274366104">
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1578420478595">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578274366104" />
+    <state x="499" y="159" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.824@0.0.1536.824" timestamp="1578420478595" />
     <state x="442" y="110" key="#npm_start" timestamp="1578344939737">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="442" y="110" key="#npm_start/0.0.1536.824@0.0.1536.824" timestamp="1578344939737" />
-    <state x="393" y="5" key="CommitChangelistDialog2" timestamp="1578366487881">
+    <state x="393" y="5" key="CommitChangelistDialog2" timestamp="1578422271587">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="393" y="5" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1578366487881" />
+    <state x="393" y="5" key="CommitChangelistDialog2/0.0.1536.824@0.0.1536.824" timestamp="1578422271587" />
     <state x="429" y="138" key="FileChooserDialogImpl" timestamp="1578346486373">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -196,22 +213,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="651" y="305" width="354" height="230" key="Github.ShareDialog/0.0.1536.824@0.0.1536.824" timestamp="1578294948090" />
-    <state width="1515" height="42" key="GridCell.Tab.0.bottom" timestamp="1578366263739">
+    <state width="1515" height="99" key="GridCell.Tab.0.bottom" timestamp="1578422271732">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="42" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1578366263739" />
-    <state width="1515" height="42" key="GridCell.Tab.0.center" timestamp="1578366263739">
+    <state width="1515" height="99" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1578422271732" />
+    <state width="1515" height="99" key="GridCell.Tab.0.center" timestamp="1578422271732">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="42" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1578366263739" />
-    <state width="1515" height="42" key="GridCell.Tab.0.left" timestamp="1578366263739">
+    <state width="1515" height="99" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1578422271732" />
+    <state width="1515" height="99" key="GridCell.Tab.0.left" timestamp="1578422271731">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="42" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1578366263739" />
-    <state width="1515" height="42" key="GridCell.Tab.0.right" timestamp="1578366263739">
+    <state width="1515" height="99" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1578422271731" />
+    <state width="1515" height="99" key="GridCell.Tab.0.right" timestamp="1578422271732">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="42" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1578366263739" />
+    <state width="1515" height="99" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1578422271732" />
     <state x="647" y="123" key="RollbackChangesDialog" timestamp="1577998937647">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -220,10 +237,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="186" y="26" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1578359862509" />
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1578350111933">
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2" timestamp="1578366530775">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1578350111933" />
+    <state x="361" y="145" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1578366530775" />
     <state x="578" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1578366493343">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

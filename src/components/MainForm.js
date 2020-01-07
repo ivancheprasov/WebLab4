@@ -59,80 +59,89 @@ class MainForm extends React.Component {
     }
 
     canvasClickHandler(event) {
-        let R = $('input[name=rInput]:checked').val();
-        let errorJquery = $('#error-log');
-        errorJquery.html('');
-        let canvas = $('#canvas').get(0);
-        let context = canvas.getContext('2d');
-        R = Number(parseFloat(R.toString().replace(',', '.')).toPrecision(3));
-        if (!(R >= 1.0 && R <= 3.0)) {
-            R = 'R';
-        }
-        this.drawCanvas(R);
-        let x = event.clientX - canvas.getBoundingClientRect().left;
-        let y = event.clientY - canvas.getBoundingClientRect().top;
-        context.fillStyle = 'rgb(227, 93, 214)';
-        context.beginPath();
-        context.arc(x, y, 3, 0, 2 * Math.PI, true);
-        context.closePath();
-        context.fill();
-        context.strokeStyle = 'rgb(227, 93, 214)';
-        context.lineWidth = 2;
-        context.beginPath();
-        context.arc(x, y, 7, 0, 2 * Math.PI, true);
-        context.closePath();
-        context.stroke();
-        let xVal;
-        let yVal;
-        if (R >= 1.0 && R <= 3.0) {
-            xVal = (-canvas.height / 2 + x) / (0.35 * canvas.height) * R;
-            yVal = (canvas.height / 2 - y) / (0.35 * canvas.height) * R;
-            this.sendDot(Number(parseFloat(xVal).toPrecision(3)), Number(parseFloat(yVal).toPrecision(3)), R)
-                .then(() => this.drawDots(R));
+        let canvasJquery = $('#canvas');
+        let loc = canvasJquery[0]['loc'];
+        if (!loc) {
+            canvasJquery[0]['loc'] = true;
+            let canvas = canvasJquery.get(0);
+            let R = $('input[name=rInput]:checked').val();
+            let errorJquery = $('#error-log');
+            errorJquery.html('');
+            let context = canvas.getContext('2d');
+            R = Number(parseFloat(R.toString().replace(',', '.')).toPrecision(3));
+            if (!(R >= 1.0 && R <= 3.0)) {
+                R = 'R';
+            }
+            this.drawCanvas(R);
+            let x = event.clientX - canvas.getBoundingClientRect().left;
+            let y = event.clientY - canvas.getBoundingClientRect().top;
+            context.fillStyle = 'rgb(227, 93, 214)';
+            context.beginPath();
+            context.arc(x, y, 3, 0, 2 * Math.PI, true);
+            context.closePath();
+            context.fill();
+            context.strokeStyle = 'rgb(227, 93, 214)';
+            context.lineWidth = 2;
+            context.beginPath();
+            context.arc(x, y, 7, 0, 2 * Math.PI, true);
+            context.closePath();
+            context.stroke();
+            let xVal;
+            let yVal;
+            if (R >= 1.0 && R <= 3.0) {
+                xVal = (-canvas.height / 2 + x) / (0.35 * canvas.height) * R;
+                yVal = (canvas.height / 2 - y) / (0.35 * canvas.height) * R;
+                this.sendDot(Number(parseFloat(xVal).toPrecision(3)), Number(parseFloat(yVal).toPrecision(3)), R)
+                    .then(() => this.drawDots(R))
+                    .then(() => canvasJquery[0]['loc'] = false);
+            }
         }
     }
 
+
     async sendDot(x, y, r) {
         let ok = false;
-        const url = 'http://localhost:' + port + '/dots';
+        const url = `http://localhost:${port}/dots`;
         await axios.post(url, JSON.stringify({x: x, y: y, r: r}), {
             headers: {
                 Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput),
                 'Content-type': 'application/json'
-            }})
-            .then(
-            result => {
-                if (result.status === 200) ok = true;
-            },
-            () => {
-                this.clearErrorLog();
-                this.pushErrorLog('Не удалось добавить точку');
             }
-        );
+        })
+            .then(
+                result => {
+                    if (result.status === 200) ok = true;
+                },
+                () => {
+                    this.clearErrorLog();
+                    this.pushErrorLog('Не удалось добавить точку');
+                }
+            );
         if (ok) await this.updateDots();
     }
 
     async getDots() {
-        const url = 'http://localhost:' + port + '/dots';
+        const url = `http://localhost:${port}/dots`;
         let dots = new DotArray(this.props.form.dots);
         await axios.get(url, {
             headers: {
                 Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput),
                 'Content-type': 'application/json'
-            }})
+            }
+        })
             .then(
-            response => {
-                if (response.status === 200) {
-                    dots = new DotArray();
-                    Array.from(response.data).forEach(dot => {
-                        dots.add(dot.x, dot.y, dot.r);
-                    });
-                }
-            },
-            ()=> {
-            this.clearErrorLog();
-            this.pushErrorLog('Не удалось получить координаты точек');
-        });
+                response => {
+                    if (response.status === 200) {
+                        dots = new DotArray();
+                        Array.from(response.data).forEach(dot => {
+                            dots.add(dot.x, dot.y, dot.r);
+                        });
+                    }
+                },
+                () => {
+                    this.clearErrorLog();
+                    this.pushErrorLog('Не удалось получить координаты точек');
+                });
         return dots;
     }
 
@@ -282,14 +291,14 @@ class MainForm extends React.Component {
         this.drawDots(event.target.value);
     }
 
-    drawDots(R) {
+    async drawDots(R) {
         if (!(R === 'R')) {
             let canvas = $('#canvas').get(0);
-            if(!(canvas===undefined)){
+            if (!(canvas === undefined)) {
                 let context = canvas.getContext('2d');
                 let size = canvas.height;
                 const dots = new DotArray(this.props.form.dots);
-                dots.getDots().forEach((dot,i) => {
+                await dots.getDots().forEach((dot) => {
                     if (this.isHit(dot.getX(), dot.getY())) {
                         if (dots.getDots().indexOf(dot) === (dots.getDots().length - 1)) {
                             context.fillStyle = 'rgb(39, 219, 105)';
