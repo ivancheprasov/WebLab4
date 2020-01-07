@@ -14,8 +14,8 @@ class WelcomeForm extends React.Component {
     }
 
     checkInput() {
-        const login=this.props.user.loginInput;
-        const password=this.props.user.passwordInput;
+        const login = this.props.user.loginInput;
+        const password = this.props.user.passwordInput;
         return !(
             login === "" ||
             login == null ||
@@ -27,16 +27,18 @@ class WelcomeForm extends React.Component {
     handleLogIn() {
         this.props.setUserMessage('');
         if (this.checkInput()) {
-            const data = this.getData();
-            const url='http://localhost:'+port+'/';
-            axios.post(url,{data},{
-                headers: { Authorization:'Basic '+btoa(data.login+':'+data.password)}}).then(result=>{
-                if(result.status===200){
-                    this.props.setLogIn(true);
-                }else{
-                    this.props.setUserMessage('Не удалось войти в систему. Проверьте логин и пароль');
-                }
-            });
+            try{
+                const data = this.getData();
+                const url = 'http://localhost:' + port + '/';
+                axios.post(url, {data}, {
+                    headers: {Authorization: 'Basic ' + btoa(data.login + ':' + data.password)}
+                })
+                    .then(
+                        result => {if (result.status === 200) this.props.setLogIn(true);},
+                        () => this.props.setUserMessage('Не удалось войти в систему. Проверьте логин и пароль'));
+            }catch (e) {
+                this.props.setUserMessage("Возможно вы ввели недопустимый логин или пароль.");
+            }
         } else {
             this.props.setUserMessage("Введите логин и пароль, пожалуйста.");
         }
@@ -46,18 +48,13 @@ class WelcomeForm extends React.Component {
         this.props.setUserMessage('');
         if (this.checkInput()) {
             const data = this.getData();
-            const url='http://localhost:'+port+'/register';
-            axios.post(url,JSON.stringify({username:data.login,password:data.password}),{
-                headers:{
-                    'Content-type':'application/json'
-                }
-            }).then(result=>{
-                if(result.status===200){
-                    this.props.setUserMessage("Регистрация прошла успешно.");
-                }else{
-                    this.props.setUserMessage("Не удалось зарегистрироваться. Возможно, выбранный логин уже занят.");
-                }
-            });
+            const url = 'http://localhost:' + port + '/register';
+            axios.post(url, JSON.stringify(
+                {username: data.login, password: data.password}),
+                {headers: {'Content-type': 'application/json'}})
+                .then(
+                    result => {if (result.status === 200) this.props.setUserMessage("Регистрация прошла успешно.");},
+                    () => this.props.setUserMessage("Не удалось зарегистрироваться. Возможно, выбранный логин уже занят."));
         } else {
             this.props.setUserMessage("Введите логин и пароль, пожалуйста.");
         }
@@ -84,7 +81,7 @@ class WelcomeForm extends React.Component {
                 <form className="welcomeForm">
                     <input className="loginInput"
                            type="text"
-                           value={this.props.user.loginInput||""}
+                           value={this.props.user.loginInput || ""}
                            placeholder="Введите логин"
                            onChange={event => {
                                this.handleLoginChange(event)
@@ -95,7 +92,7 @@ class WelcomeForm extends React.Component {
                            form="welcomeForm"/>
                     <input className="passwordInput"
                            type="password"
-                           value={this.props.user.passwordInput||""}
+                           value={this.props.user.passwordInput || ""}
                            placeholder="Введите пароль"
                            onChange={event => this.handlePasswordChange(event)}
                            maxLength={20}
@@ -133,8 +130,8 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setLoginInput: login =>dispatch(setLoginInput(login)),
-        setPasswordInput: password=>dispatch(setPasswordInput(password)),
+        setLoginInput: login => dispatch(setLoginInput(login)),
+        setPasswordInput: password => dispatch(setPasswordInput(password)),
         setUserMessage: message => dispatch(setUserMessage(message)),
         setLogIn: flag => dispatch(setLogIn(flag)),
     }

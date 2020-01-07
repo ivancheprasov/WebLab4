@@ -93,21 +93,23 @@ class MainForm extends React.Component {
     }
 
     async sendDot(x, y, r) {
-        let ok=false;
+        let ok = false;
         const url = 'http://localhost:' + port + '/dots';
         await axios.post(url, JSON.stringify({x: x, y: y, r: r}), {
-            headers: {Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput)},
-            'Content-type': 'application/json'
-        }).then(result => {
-                if (result.status === 200) {
-                    ok=true;
-                } else {
-                    this.clearErrorLog();
-                    this.pushErrorLog('Не удалось добавить точку');
-                }
+            headers: {
+                Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput),
+                'Content-type': 'application/json'
+            }})
+            .then(
+            result => {
+                if (result.status === 200) ok = true;
+            },
+            () => {
+                this.clearErrorLog();
+                this.pushErrorLog('Не удалось добавить точку');
             }
         );
-        if(ok)await this.updateDots(x, y, r);
+        if (ok) await this.updateDots();
     }
 
     async getDots() {
@@ -117,32 +119,28 @@ class MainForm extends React.Component {
             headers: {
                 Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput),
                 'Content-type': 'application/json'
-            }
-        }).then(response => {
+            }})
+            .then(
+            response => {
                 if (response.status === 200) {
                     dots = new DotArray();
                     Array.from(response.data).forEach(dot => {
                         dots.add(dot.x, dot.y, dot.r);
                     });
-                    this.props.setDots(dots.getDots());
-                } else {
-                    this.clearErrorLog();
-                    this.pushErrorLog('Не удалось получить координаты точек');
                 }
-            }
-        );
+            },
+            ()=> {
+            this.clearErrorLog();
+            this.pushErrorLog('Не удалось получить координаты точек');
+        });
         return dots;
     }
 
-    async updateDots(x, y, r) {
-        const dots = await this.getDots();
-        dots.add(x, y, r);
-        this.props.setDots(dots.getDots());
-    }
-    async renderDefaultDots(){
+    async updateDots() {
         const dots = await this.getDots();
         this.props.setDots(dots.getDots());
     }
+
     pushErrorLog(message) {
         let errorJquery = $('#errorLog');
         let li = document.createElement('li');
@@ -163,7 +161,7 @@ class MainForm extends React.Component {
     renderCanvas() {
         let R = $('input[name=rInput]:checked').val();
         this.drawCanvas(R);
-        this.renderDefaultDots().then(()=>this.drawDots(R));
+        this.updateDots().then(() => this.drawDots(R));
     }
 
     drawCanvas(R) {
@@ -287,42 +285,44 @@ class MainForm extends React.Component {
     drawDots(R) {
         if (!(R === 'R')) {
             let canvas = $('#canvas').get(0);
-            let context = canvas.getContext('2d');
-            let size = canvas.height;
-            const dots = new DotArray(this.props.form.dots);
-            dots.getDots().forEach(dot => {
-                if (this.isHit(dot.getX(), dot.getY())) {
-                    if (dots.getDots().indexOf(dot) === (dots.getDots().length - 1)) {
-                        context.fillStyle = 'rgb(39, 219, 105)';
-                        context.strokeStyle = 'rgb(39, 219, 105)';
+            if(!(canvas===undefined)){
+                let context = canvas.getContext('2d');
+                let size = canvas.height;
+                const dots = new DotArray(this.props.form.dots);
+                dots.getDots().forEach((dot,i) => {
+                    if (this.isHit(dot.getX(), dot.getY())) {
+                        if (dots.getDots().indexOf(dot) === (dots.getDots().length - 1)) {
+                            context.fillStyle = 'rgb(39, 219, 105)';
+                            context.strokeStyle = 'rgb(39, 219, 105)';
+                        } else {
+                            context.fillStyle = 'rgb(18, 74, 39)';
+                            context.strokeStyle = 'rgb(18, 74, 39)';
+                        }
                     } else {
-                        context.fillStyle = 'rgb(18, 74, 39)';
-                        context.strokeStyle = 'rgb(18, 74, 39)';
+                        if (dots.getDots().indexOf(dot) === (dots.getDots().length - 1)) {
+                            context.fillStyle = 'rgb(138, 89, 179)';
+                            context.strokeStyle = 'rgb(138, 89, 179)';
+                        } else {
+                            context.fillStyle = 'rgb(92, 44, 156)';
+                            context.strokeStyle = 'rgb(92, 44, 156)';
+                        }
                     }
-                } else {
-                    if (dots.getDots().indexOf(dot) === (dots.getDots().length - 1)) {
-                        context.fillStyle = 'rgb(138, 89, 179)';
-                        context.strokeStyle = 'rgb(138, 89, 179)';
-                    } else {
-                        context.fillStyle = 'rgb(92, 44, 156)';
-                        context.strokeStyle = 'rgb(92, 44, 156)';
-                    }
-                }
-                context.beginPath();
-                let x = dot.getX();
-                let y = dot.getY();
-                let r = dot.getR();
-                let canvasX = this.calculateCanvasCoordinate(x * 0.35 * size / r + size / 2, r, R, size);
-                let canvasY = this.calculateCanvasCoordinate(size / 2 - y * 0.35 * size / r, r, R, size);
-                context.arc(canvasX, canvasY, 3, 0, 2 * Math.PI, true);
-                context.closePath();
-                context.fill();
-                context.lineWidth = 2;
-                context.beginPath();
-                context.arc(canvasX, canvasY, 7, 0, 2 * Math.PI, true);
-                context.closePath();
-                context.stroke();
-            });
+                    context.beginPath();
+                    let x = dot.getX();
+                    let y = dot.getY();
+                    let r = dot.getR();
+                    let canvasX = this.calculateCanvasCoordinate(x * 0.35 * size / r + size / 2, r, R, size);
+                    let canvasY = this.calculateCanvasCoordinate(size / 2 - y * 0.35 * size / r, r, R, size);
+                    context.arc(canvasX, canvasY, 3, 0, 2 * Math.PI, true);
+                    context.closePath();
+                    context.fill();
+                    context.lineWidth = 2;
+                    context.beginPath();
+                    context.arc(canvasX, canvasY, 7, 0, 2 * Math.PI, true);
+                    context.closePath();
+                    context.stroke();
+                });
+            }
         }
     }
 
