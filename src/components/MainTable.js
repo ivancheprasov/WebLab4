@@ -3,15 +3,18 @@ import {connect} from 'react-redux';
 import $ from 'jquery';
 import {setLogIn} from "../actions/userActions";
 import {DotArray} from "../classes/DotArray";
+import {deviceEnum} from "../const/deviceEnum";
 
 class MainTable extends React.Component {
     componentDidMount() {
-        let leftTable = $('#leftTable');
-        let rightTable = $('#rightTable');
-        if (leftTable.height() > rightTable.height()) {
-            rightTable.height(leftTable.height());
-        } else {
-            leftTable.height(rightTable.height());
+        if(this.props.deviceType===deviceEnum.DESKTOP){
+            let leftTable = $('#leftTable');
+            let rightTable = $('#rightTable');
+            if (leftTable.height() > rightTable.height()) {
+                rightTable.height(leftTable.height());
+            } else {
+                leftTable.height(rightTable.height());
+            }
         }
     }
 
@@ -95,6 +98,7 @@ const mapDispatchToProps = dispatch => {
 };
 const mapStateToProps = store => {
     return {
+        deviceType: store.style.deviceType,
         rightTable: store.style.deviceType.rightTable,
         style: store.style.deviceType.mainTable,
         dots: store.form.dots
