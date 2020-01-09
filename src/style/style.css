@@ -1,5 +1,6 @@
 html{
 	height: 95%;
+	min-width: 480px;
 }
 body{
 	height: 95%;

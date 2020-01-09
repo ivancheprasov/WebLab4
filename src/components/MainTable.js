@@ -3,11 +3,11 @@ import {connect} from 'react-redux';
 import $ from 'jquery';
 import {setLogIn} from "../actions/userActions";
 import {DotArray} from "../classes/DotArray";
-import {deviceEnum} from "../const/deviceEnum";
+import {desktop} from "../style/desktop";
 
 class MainTable extends React.Component {
     componentDidMount() {
-        if(this.props.deviceType===deviceEnum.DESKTOP){
+        if(this.props.deviceType===desktop){
             let leftTable = $('#leftTable');
             let rightTable = $('#rightTable');
             if (leftTable.height() > rightTable.height()) {

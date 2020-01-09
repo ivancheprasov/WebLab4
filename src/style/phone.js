@@ -10,15 +10,18 @@ export const phone={
         minHeight: '130px',
         h1: {
             firstLine: {
-                fontSize: '35px'
+                fontSize: '30px'
             }
         }
     },
     footer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
+        // position: 'absolute',
+        // bottom: 0,
+        // left: 0,
+        // right: 0,
+        minHeight:'25%',
+        marginTop: '8%',
+        marginBottom:'2%',
         fontFamily: '"Times",serif',
         border: '2px solid #464274',
         textAlign: 'center',
@@ -27,11 +30,12 @@ export const phone={
         fontSize: '22px'
     },
     welcomeForm: {
+        minHeight:'40%',
         border: '2px solid #464274',
         textAlign: 'center',
         background: '#7276a6',
         alignContent: 'center',
-        marginTop: '6%',
+        marginTop: '8%',
         loginInput: {
             marginTop: '2%',
             marginBottom: '1%',
@@ -125,8 +129,8 @@ export const phone={
             textAlignLast: 'center',
         },
         submitButtonDiv: {
-            marginTop: '0.5%',
-            marginBottom: '0.5%',
+            marginTop: '0%',
+            marginBottom: '0%',
             height: '10%'
         },
         submitButton: {
@@ -157,40 +161,44 @@ export const phone={
         }
     },
     leftTable: {
-        float: 'left',
-        marginBottom: '1%',
-        width: '50%',
-        minHeight: '350px',
-        minWidth: '450px',
-        marginTop: '1%',
+        width: '98%',
+        minHeight: '390px',
+        minWidth: '440px',
         background: '#7276a6',
-        border: '2px solid #464274',
         textAlign: 'center',
-        height: '350px'
+        // height: '390px',
+        margin: '0%',
+        border: '2px solid #30125A',
+        borderBottom: 'none'
     },
     rightTable: {
-        float: 'right',
-        marginBottom: '1%',
-        width: '50%',
-        minWidth: '450px',
-        minHeight: '500px',
+        width: '98%',
+        minWidth: '440px',
+        minHeight: '280px',
         background: '#7276a6',
-        border: '2px solid #464274',
-        marginTop: '1%',
-        textAlign: 'center'
+        textAlign: 'center',
+        margin: '0%',
+        border: '2px solid #30125A',
+        borderTop: 'none',
+        borderBottom: 'none'
     },
     bottomTable: {
-        clear: 'both',
+        minWidth: '440px',
+        width: '98%',
         background: '#7276a6',
-        border: '2px solid #464274',
-        minHeight: '165px',
-        marginBottom: '2.5%'
+        minHeight: '100px',
+        margin: '0%',
+        border: '2px solid #30125A',
+        borderTop: 'none'
     },
     errorTable: {
         width: '100%',
         textAlign: 'center',
         fontSize: '25px',
-        paddingTop: '2.5%'
+        paddingTop: '0%',
+        td: {
+            maxHeight: '30px'
+        }
     },
     errorLog: {
         textAlign: 'left',
@@ -205,18 +213,18 @@ export const phone={
             marginBottom: '0.5%'
         },
         tableHeading: {
-            fontSize: '25px',
-            paddingTop: '5%',
-            paddingBottom: '5%',
+            fontSize: '22px',
+            paddingTop: '0%',
+            paddingBottom: '0%',
         },
         logOutButtonDiv: {
-            marginTop: '0.5%',
-            marginBottom: '0.5%',
-            height: '10%'
+            marginTop: '2%',
+            marginBottom: '0%',
+            height: '8%'
         },
         logOutButton: {
             borderRadius: '16px',
-            width: '40%',
+            width: '90%',
             backgroundColor: '#464274',
             border: 'none',
             textDecoration: 'none',
@@ -227,9 +235,9 @@ export const phone={
             fontSize: '25px',
         },
         resultTable: {
-            marginLeft: '5%',
-            marginRight: '5%',
-            width: '90%',
+            marginLeft: '1%',
+            marginRight: '1%',
+            width: '98%',
             border: '2px solid #30125A',
             background: 'white',
             color: '#464274',
@@ -238,11 +246,12 @@ export const phone={
         resultTableHead: {
             background: '#464274',
             color: 'white',
-            fontStyle: 'normal'
+            fontStyle: 'normal',
+            fontSize: '16px'
         },
         resultTableCell: {
             border: '1px solid #464274',
-            minHeight: '60px'
+            minHeight: '50px'
         }
     }
 };

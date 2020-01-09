@@ -36,7 +36,7 @@ class App extends React.Component {
         } else {
             this.props.setStyle(deviceEnum.TABLET);
             this.props.setDeviceType(deviceEnum.TABLET);
-            this.props.setCanvasWidth(window.screen.availWidth*0.25);
+            this.props.setCanvasWidth(window.screen.availWidth*0.4);
         }
     }
     render() {
