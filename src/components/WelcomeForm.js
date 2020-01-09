@@ -29,7 +29,7 @@ class WelcomeForm extends React.Component {
         if (this.checkInput()) {
             try{
                 const data = this.getData();
-                const url = `http://localhost:${port}/`;
+                const url = `http://localhost:${port}/logging`;
                 axios.post(url, {data}, {
                     headers: {Authorization: 'Basic ' + btoa(data.login + ':' + data.password)}
                 })

@@ -47,7 +47,6 @@ class App extends React.Component {
                 {this.props.user.isLogIn && <Redirect to={'/main'}/>}
                 {(!this.props.user.isLogIn && <Redirect to={'/welcome'}/>)}
             </BrowserRouter>
-            // <MainPage/>
         )
     };
 }
