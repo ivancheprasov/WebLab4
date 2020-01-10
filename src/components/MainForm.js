@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {setRInput, setXInput, setYInput, setDots} from '../actions/formActions';
 import $ from 'jquery';
 import axios from 'axios';
-import {port} from '../const/port';
 import {DotArray} from '../classes/DotArray';
 
 class MainForm extends React.Component {
@@ -101,7 +100,7 @@ class MainForm extends React.Component {
 
     async sendDot(x, y, r) {
         let ok = false;
-        const url = `http://localhost:${port}/dots`;
+        const url = `/dots`;
         await axios.post(url, JSON.stringify({x: x, y: y, r: r}), {
             headers: {
                 Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput),
@@ -121,7 +120,7 @@ class MainForm extends React.Component {
     }
 
     async getDots() {
-        const url = `http://localhost:${port}/dots`;
+        const url = `/dots`;
         let dots = new DotArray(this.props.form.dots);
         await axios.get(url, {
             headers: {

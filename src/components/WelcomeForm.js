@@ -5,7 +5,6 @@ import {setLoginInput} from "../actions/userActions";
 import {setPasswordInput} from "../actions/userActions";
 import {setLogIn} from "../actions/userActions";
 import axios from 'axios';
-import {port} from "../const/port";
 
 class WelcomeForm extends React.Component {
     constructor(props) {
@@ -29,7 +28,7 @@ class WelcomeForm extends React.Component {
         if (this.checkInput()) {
             try{
                 const data = this.getData();
-                const url = `http://localhost:${port}/logging`;
+                const url = `/logging`;
                 axios.post(url, {data}, {
                     headers: {Authorization: 'Basic ' + btoa(data.login + ':' + data.password)}
                 })
@@ -48,7 +47,7 @@ class WelcomeForm extends React.Component {
         this.props.setUserMessage('');
         if (this.checkInput()) {
             const data = this.getData();
-            const url = `http://localhost:${port}/register`;
+            const url = `/register`;
             axios.post(url, JSON.stringify(
                 {username: data.login, password: data.password}),
                 {headers: {'Content-type': 'application/json'}})
