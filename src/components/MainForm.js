@@ -284,10 +284,24 @@ class MainForm extends React.Component {
         this.props.setXInput(Number(event.target.value));
     }
 
-    setR(event) {
+    async setR(event) {
         this.props.setRInput(Number(event.target.value));
         this.drawCanvas(event.target.value);
         this.drawDots(event.target.value);
+        let r = $('input[name=rInput]:checked').val();
+        let url = `/changingRadius/${r}`;
+        await axios.get(url, {
+            headers: {
+                Authorization: 'Basic ' + btoa(this.props.user.loginInput + ':' + this.props.user.passwordInput),
+                'Content-type': 'application/json'
+            }
+        })
+            .then(
+                () => {
+                    this.clearErrorLog();
+                    this.pushErrorLog('Не удалось отправить значение радиуса.');
+                }
+            );
     }
 
     async drawDots(R) {
